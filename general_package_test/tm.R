@@ -1,4 +1,4 @@
-setwd(dir = "G:/seminaire_AXA/Fiches_Sinistres_mex/Costco")
+setwd(dir = "")
 
 ####################################
 ## 1. Install the packages needed ##
@@ -29,7 +29,10 @@ library(wordcloud)
 ##############################################
 
 # import pdf file names
-files <- list.files(pattern = "pdf$")
+files1 <- list.files(pattern = "pdf$")
+files2 <- list.files(pattern = "PDF$")
+files <- c(files1, files2)
+
 Rpdf <- readPDF(control = list(text = "-layout"))
 
 # tranform them to text

@@ -8,17 +8,15 @@ setwd(dir = "D:/Documents/Centrale/3A/seminaire_AXA/dossier_robin/code/IE")
 source(file = "tagPOS.R")
 source(file = "search_date.R")
 source(file = "search_policy_id.R")
-
-# folder containing the data
-setwd(dir = "D:/Documents/Centrale/3A/seminaire_AXA/Fiches_Sinistres_mex/2_annotations")
+source(file = "search_claim.R")
 
 ####################################
 ## 1. Install the packages needed ##
 ####################################
 
 # install packages needed
-install.packages(c("tm", "qdap", "qdapDictionaries", "dplyr", "RColorBrewer", 
-                   "ggplot2", "scales", "magrittr", "wordcloud"), dependencies = T)
+install.packages(c("tm", "qdap", "qdapDictionaries", "dplyr", 
+                   "ggplot2", "scales", "magrittr"), dependencies = T)
 
 # installation du package Rgraphviz (correlation plot)
 source("http://bioconductor.org/biocLite.R")
@@ -29,12 +27,9 @@ library(tm) # Framework for text mining.
 library(qdap) # Quantitative discourse analysis of transcripts. 
 library(qdapDictionaries) 
 library(dplyr) # Data wrangling, pipe operator %>%(). 
-library(RColorBrewer) # Generate palette of colours for plots. 
 library(ggplot2) # Plot word frequencies. 
 library(scales) # Include commas in numbers. 
 library(magrittr)
-library(Rgraphviz)
-library(wordcloud)
 
 # function to see the beggining of a text
 viewDocs <- function(docs, n, l) {docs[[n]]$content[1:l]}
@@ -42,6 +37,9 @@ viewDocs <- function(docs, n, l) {docs[[n]]$content[1:l]}
 ##############################################
 ## 2. Create a corpus of text form PDF docs ##
 ##############################################
+
+# folder containing the data
+setwd(dir = "D:/Documents/Centrale/3A/seminaire_AXA/Fiches_Sinistres_mex/2_annotations")
 
 # import pdf file names
 file_names_1 <- list.files(pattern = "pdf$", recursive = T)
@@ -51,8 +49,6 @@ file_names <- c(file_names_1, file_names_2)
 Rpdf <- readPDF(control = list(text = "-layout"))
 
 # create the corpus
-setwd(dir = "D:/Documents/Centrale/3A/seminaire_AXA/dossier_robin/FICHES_TRIEES")
-
 docs <- Corpus(URISource("VistaSerena/14.10.08 - VISTA SERENA - IP 01573514 - PRELIM CRAWFORD [ENG] .pdf"), 
                readerControl = list(reader = Rpdf))
 
@@ -81,9 +77,14 @@ head(doc_tagged$POSwords)
 
 #----------------------------------------#
 # dictionnaire de mots pour chaque attributs
-dic <- list(date = list(level1 = c("date"), level2 = c("loss", "incident", "sinister", "event")),
+dic <- list(date = list(level1 = c("date"), 
+                        level2 = c("loss", "incident", "sinister", "event")),
             
-            policy_id = list( level1 = c("policy"), level2 = c("number", "no", "nâº", "nº"), level3 = c("period")),
+            policy_id = list( level1 = c("policy"), 
+                              level2 = c("number", "no", "nâº", "nº"), 
+                              level3 = c("period")),
+            
+            claim = list(level1 = c("claim","adjusted loss", "claimed amount", "loss estimate")),
             
             cause = c("hurricane", "floods", "fire", "earthquake"),
             

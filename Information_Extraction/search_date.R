@@ -66,7 +66,7 @@ search_date <- function(doc_tagged, dic){
     # length of the date
     l <- NA
     
-    # search for the tags corresponding to each date formats
+    # search for the tags corresponding to each date formats (break if we found it)
     for(i in 1:length(date_tag_formats)){
       
       # search for the sequence of date tags into the sub-sequence of tags

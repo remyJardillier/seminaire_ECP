@@ -43,11 +43,16 @@ search_policy_id <- function(doc_tagged, dic){
     ind_policy_txt <- inds_policy[1]
   }
   
+  # index where to start the research
+  ind_start <- ind_policy_txt + 1
+  if(doc_tagged$POSwords[ind_start] == ":"){
+    ind_start <- ind_start + 1
+  }
   # sequences in which to search the policy
-  sub_words <- doc_tagged$POSwords[(ind_policy_txt+1) : (ind_policy_txt + 15)] # is 15 a good choice???
-  sub_tags <- doc_tagged$POStags[(ind_policy_txt+1) : (ind_policy_txt + 15)]
+  sub_words <- doc_tagged$POSwords[(ind_start) : (ind_start + 10)] # is 10 a good choice???
+  sub_tags <- doc_tagged$POStags[(ind_start) : (ind_start + 10)]
   
-  # searh for the first "CD" tag after the word we found in the previous part
+  # searh for the first "CD" or "FW" tag after the word we found in the previous part
   ind_policy_sub <- min(match(c("CD", "FW"), sub_tags), na.rm = T)
   policy_id <- sub_words[ind_policy_sub]
   

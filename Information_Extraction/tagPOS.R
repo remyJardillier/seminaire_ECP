@@ -1,7 +1,7 @@
 # usefull packages:
 # install.packages("openNLP")
-library(openNLP)
-require("NLP")
+require(openNLP)
+require(NLP)
 
 #-------------------------------#
 # fonction pour tager le texte 
@@ -15,7 +15,7 @@ tagPOS <-  function(doc, ...) {
   # we have to convert s as a String to use the following function
   s <- as.String(s)
   
-  # words annotation:
+  # words annotation (split the text into sentences and the sentences into words)
   a2 <- Annotation(1L, "sentence", 1L, nchar(s))
   word_token_annotator <- Maxent_Word_Token_Annotator()
   a2 <- NLP::annotate(s, word_token_annotator, a2)
@@ -33,5 +33,5 @@ tagPOS <-  function(doc, ...) {
   # POStagged <- paste(sprintf("%s/%s", s[a3w], POStags), collapse = " ")
   
   # list we return
-  x=list(POSwords  = POSwords, POStags = POStags) #, POStagged = POStagged)
+  x=list(POSwords  = POSwords, POStags = POStags) # POStagged = POStagged)
 }
